@@ -4,9 +4,6 @@
 #include "esphome/core/preferences.h"
 #include "esphome/components/i2c/i2c.h"
 #include "esphome/components/sensor/sensor.h"
-#ifdef USE_API
-#include "esphome/components/api/custom_api_device.h"
-#endif
 #include "chirp_device.h"
 #include <vector>
 #include <map>
@@ -29,11 +26,7 @@ struct ChirpSensors {
  * Main component that manages multiple Chirp soil moisture sensors.
  * Handles automatic device discovery, dynamic sensor creation, and persistent labeling.
  */
-class ChirpComponent : public Component
-#ifdef USE_API
-    , public api::CustomAPIDevice
-#endif
-{
+class ChirpComponent : public Component {
  public:
   void setup() override;
   void loop() override;

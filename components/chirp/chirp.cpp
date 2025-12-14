@@ -36,14 +36,10 @@ void ChirpComponent::setup() {
     delay(50);
   }
   
-#ifdef USE_API
-  // Register services
-  register_service(&ChirpComponent::set_device_address, "set_address",
-                   {"old_address", "new_address"});
-  register_service(&ChirpComponent::set_device_label, "set_label",
-                   {"address", "label"});
-  register_service(&ChirpComponent::rescan_bus, "rescan");
-#endif
+  // TODO: Service registration - requires custom_services support in ESPHome
+  // Services can be added via ESPHome actions in YAML as a workaround
+  // For now, devices can be managed by modifying code or via serial console
+  ESP_LOGI(TAG, "Note: Service registration is disabled. Use manual methods for address changes.");
   
   ESP_LOGCONFIG(TAG, "Chirp component setup complete. Found %d device(s)", this->devices_.size());
 }
@@ -285,7 +281,6 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.moisture->set_device_class("moisture");
   sensors.moisture->set_icon("mdi:water-percent");
   sensors.moisture->set_accuracy_decimals(0);
-  App.register_component(sensors.moisture);
   
   // Create temperature sensor
   sensors.temperature = new sensor::Sensor();
@@ -294,7 +289,6 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.temperature->set_device_class("temperature");
   sensors.temperature->set_icon("mdi:thermometer");
   sensors.temperature->set_accuracy_decimals(1);
-  App.register_component(sensors.temperature);
   
   // Create light sensor
   sensors.light = new sensor::Sensor();
@@ -303,7 +297,6 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.light->set_device_class("illuminance");
   sensors.light->set_icon("mdi:white-balance-sunny");
   sensors.light->set_accuracy_decimals(0);
-  App.register_component(sensors.light);
   
   this->sensors_[address] = sensors;
   
