@@ -22,7 +22,7 @@ static const uint8_t CHIRP_REG_RESET = 0x06;         // Reset sensor
  */
 class ChirpDevice {
  public:
-  ChirpDevice(i2c::I2CComponent *i2c_bus, uint8_t address);
+  ChirpDevice(i2c::I2CBus *i2c_bus, uint8_t address);
 
   /**
    * Initialize the device and verify it's a Chirp sensor.
@@ -97,7 +97,7 @@ class ChirpDevice {
   std::string get_display_name() const;
 
  protected:
-  i2c::I2CComponent *i2c_bus_;
+  i2c::I2CBus *i2c_bus_;
   uint8_t address_;
   std::string label_;
 

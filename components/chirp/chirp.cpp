@@ -36,12 +36,14 @@ void ChirpComponent::setup() {
     delay(50);
   }
   
+#ifdef USE_API
   // Register services
   register_service(&ChirpComponent::set_device_address, "set_address",
                    {"old_address", "new_address"});
   register_service(&ChirpComponent::set_device_label, "set_label",
                    {"address", "label"});
   register_service(&ChirpComponent::rescan_bus, "rescan");
+#endif
   
   ESP_LOGCONFIG(TAG, "Chirp component setup complete. Found %d device(s)", this->devices_.size());
 }
@@ -191,7 +193,7 @@ void ChirpComponent::scan_for_devices_() {
     }
     
     // Try to create and setup a device at this address
-    ChirpDevice *test_device = new ChirpDevice(this->parent_, addr);
+    ChirpDevice *test_device = new ChirpDevice(this->i2c_bus_, addr);
     if (test_device->setup()) {
       // Valid device found
       found_addresses.push_back(addr);
@@ -231,7 +233,7 @@ void ChirpComponent::add_device_(uint8_t address) {
   ESP_LOGI(TAG, "Adding new Chirp device at address 0x%02X", address);
   
   // Create device
-  ChirpDevice *device = new ChirpDevice(this->parent_, address);
+  ChirpDevice *device = new ChirpDevice(this->i2c_bus_, address);
   
   // Try to load label from storage
   for (auto *existing_dev : this->devices_) {

@@ -4,7 +4,9 @@
 #include "esphome/core/preferences.h"
 #include "esphome/components/i2c/i2c.h"
 #include "esphome/components/sensor/sensor.h"
+#ifdef USE_API
 #include "esphome/components/api/custom_api_device.h"
+#endif
 #include "chirp_device.h"
 #include <vector>
 #include <map>
@@ -27,12 +29,21 @@ struct ChirpSensors {
  * Main component that manages multiple Chirp soil moisture sensors.
  * Handles automatic device discovery, dynamic sensor creation, and persistent labeling.
  */
-class ChirpComponent : public Component, public i2c::I2CDevice, public api::CustomAPIDevice {
+class ChirpComponent : public Component
+#ifdef USE_API
+    , public api::CustomAPIDevice
+#endif
+{
  public:
   void setup() override;
   void loop() override;
   void dump_config() override;
   float get_setup_priority() const override { return setup_priority::DATA; }
+
+  /**
+   * Set the I2C bus to use.
+   */
+  void set_i2c_bus(i2c::I2CBus *bus) { this->i2c_bus_ = bus; }
 
   /**
    * Set the scan interval in milliseconds.
@@ -63,6 +74,7 @@ class ChirpComponent : public Component, public i2c::I2CDevice, public api::Cust
   void rescan_bus();
 
  protected:
+  i2c::I2CBus *i2c_bus_{nullptr};
   uint32_t scan_interval_{60000};  // 60 seconds default
   uint8_t scan_start_{0x01};
   uint8_t scan_end_{0x7F};
