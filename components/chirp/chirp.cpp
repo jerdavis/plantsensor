@@ -285,7 +285,7 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.moisture->set_device_class("moisture");
   sensors.moisture->set_icon("mdi:water-percent");
   sensors.moisture->set_accuracy_decimals(0);
-  App.register_sensor(sensors.moisture);
+  App.register_component(sensors.moisture);
   
   // Create temperature sensor
   sensors.temperature = new sensor::Sensor();
@@ -294,7 +294,7 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.temperature->set_device_class("temperature");
   sensors.temperature->set_icon("mdi:thermometer");
   sensors.temperature->set_accuracy_decimals(1);
-  App.register_sensor(sensors.temperature);
+  App.register_component(sensors.temperature);
   
   // Create light sensor
   sensors.light = new sensor::Sensor();
@@ -303,7 +303,7 @@ void ChirpComponent::create_sensors_(uint8_t address, ChirpDevice *device) {
   sensors.light->set_device_class("illuminance");
   sensors.light->set_icon("mdi:white-balance-sunny");
   sensors.light->set_accuracy_decimals(0);
-  App.register_sensor(sensors.light);
+  App.register_component(sensors.light);
   
   this->sensors_[address] = sensors;
   

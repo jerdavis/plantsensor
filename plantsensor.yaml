@@ -10,6 +10,7 @@ logger:
 api:
   encryption:
     key: "aafqv2q+T92WCNL3AYvuDT2GDO1KA/7l6iyrpG/wKN4="
+  custom_services: true  # Required for chirp component services
 
 ota:
   - platform: esphome
