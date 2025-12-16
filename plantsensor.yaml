@@ -54,21 +54,37 @@ esphome:
 # Load the custom chirp component from local components folder
 external_components:
   - source:
-      type: git
-      url: https://github.com/jerdavis/plantsensor
+      type: local
+      path: components
 
 i2c:
-  - id: bus_a
-    sda: GPIO21
-    scl: GPIO22
-    scan: true
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
 
-# Custom chirp component - auto-discovers all Chirp sensors
-chirp:
-  i2c_id: bus_a
-  scan_interval: 60s  # Re-scan for new devices every 60 seconds
-  address_range:
-    start: 0x01
-    end: 0x7F
+# Chirp I2C Soil Moisture Sensors
+# Add new sensors by defining additional platform: chirp entries
+sensor:
+  - platform: chirp
+    address: 0x20
+    device_name: "Plant 1"
+    update_interval: 60s
+    moisture:
+      name: "Plant 1 Soil Moisture"
+    temperature:
+      name: "Plant 1 Soil Temperature"
+    light:
+      name: "Plant 1 Soil Light"
+      
+  - platform: chirp
+    address: 0x6F
+    device_name: "Plant 2"
+    update_interval: 60s
+    moisture:
+      name: "Plant 2 Soil Moisture"
+    temperature:
+      name: "Plant 2 Soil Temperature"
+    light:
+      name: "Plant 2 Soil Light"
 
 
